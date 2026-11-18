@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrainBoost — Learn Smarter</title>
+<style>
+:root{--bg:#f5f7ff;--panel:#fff;--ink:#17213b;--muted:#68738d;--accent:#6657f5;--accent2:#18b89a;--line:#e8ebf5;--shadow:0 14px 40px rgba(36,45,90,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;padding:20px max(5vw,22px);background:rgba(255,255,255,.86);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
+.logo{font-size:22px;font-weight:900;letter-spacing:-1px}.logo span{color:var(--accent)}nav{display:flex;gap:22px}nav a{color:var(--muted);text-decoration:none;font-weight:650;font-size:14px}nav a:hover{color:var(--accent)}
+.wrap{max-width:1120px;margin:auto;padding:34px 22px 70px}.hero{display:grid;grid-template-columns:1.35fr .65fr;gap:22px;align-items:stretch}
+.hero-main{padding:42px;border-radius:26px;background:linear-gradient(125deg,#211b63,#6657f5 70%,#8a7eff);color:white;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero-main:after{content:"✦";position:absolute;font-size:190px;right:24px;bottom:-66px;color:#ffffff18}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:2px;font-weight:800;color:#c9c4ff}.hero h1{font-size:clamp(34px,5vw,54px);line-height:1.04;letter-spacing:-2px;margin:14px 0}.hero p{color:#e4e2ff;max-width:490px;line-height:1.65}
+.btn{border:0;border-radius:12px;padding:13px 18px;font-weight:800;cursor:pointer;background:var(--accent);color:#fff;transition:.2s}.btn:hover{transform:translateY(-2px);filter:brightness(1.06)}.btn.light{background:white;color:#4235bd;margin-top:12px}
+.daily{background:var(--panel);border:1px solid var(--line);border-radius:26px;padding:25px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between}.daily .emoji{font-size:34px}.daily h3{margin:14px 0 8px}.daily p{color:var(--muted);line-height:1.5;font-size:14px}
+.section-head{display:flex;align-items:end;justify-content:space-between;margin:38px 0 16px}.section-head h2{margin:0;font-size:24px;letter-spacing:-.7px}.section-head p{margin:5px 0 0;color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.subject{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--shadow);cursor:pointer;transition:.2s}.subject:hover{transform:translateY(-4px);border-color:#c9c3ff}.subject .icon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;font-size:24px;background:#efedff}.subject h3{margin:16px 0 6px}.subject p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}.tag{display:inline-block;margin-top:16px;font-size:12px;font-weight:800;color:var(--accent);background:#f0efff;padding:7px 10px;border-radius:99px}
+.content{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:25px;box-shadow:var(--shadow);display:none}.content.show{display:block}.content h3{margin-top:0}.content p,.content li{color:var(--muted);line-height:1.7}.quizbox{margin-top:15px;padding:18px;border-radius:16px;background:#f7f7ff}.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.answer{padding:12px;border:1px solid var(--line);border-radius:11px;background:white;text-align:left;cursor:pointer;font-weight:650;color:var(--ink)}.answer:hover{border-color:var(--accent)}.feedback{font-weight:800;margin-top:12px;min-height:24px}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:22px;border-top:1px solid var(--line);background:white}
+@media(max-width:760px){nav{gap:12px}nav a{font-size:12px}.hero{grid-template-columns:1fr}.hero-main{padding:30px}.grid{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.section-head{align-items:start;gap:10px;flex-direction:column}}
+
+.auth-screen{position:fixed;inset:0;z-index:20;background:linear-gradient(135deg,#211b63,#6657f5 65%,#9a8fff);display:grid;place-items:center;padding:20px}
+.auth-card{width:min(440px,100%);background:#fff;border-radius:25px;padding:30px;box-shadow:0 25px 80px #15104466}
+.auth-brand{text-align:center;font-size:25px;font-weight:950;letter-spacing:-1px;margin-bottom:8px}.auth-brand span{color:var(--accent)}
+.auth-sub{text-align:center;color:var(--muted);font-size:14px;margin:0 0 22px}
+.auth-tabs{display:flex;background:#f1f0ff;padding:4px;border-radius:12px;margin-bottom:18px}
+.auth-tabs button{flex:1;border:0;background:transparent;padding:10px;border-radius:9px;font-weight:800;color:var(--muted);cursor:pointer}
+.auth-tabs button.active{background:#fff;color:var(--accent);box-shadow:0 2px 8px #24245a12}
+.auth-card label{display:block;font-size:13px;font-weight:750;margin:13px 0 6px}
+.auth-card input{width:100%;padding:13px;border:1px solid var(--line);border-radius:11px;font:inherit;outline:none}
+.auth-card input:focus{border-color:var(--accent);box-shadow:0 0 0 3px #6657f51c}
+.auth-card .btn{width:100%;margin-top:18px}
+.auth-message{min-height:22px;font-size:13px;color:#c03955;margin-top:10px;text-align:center}
+.creator{font-size:12px;color:var(--muted);text-align:center;margin-top:18px}
+.creator strong{color:var(--accent)}
+#appContent[hidden]{display:none}
+.account-bar{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted)}
+.account-bar button{border:1px solid var(--line);background:white;color:var(--ink);padding:8px 11px;border-radius:9px;font-weight:750;cursor:pointer}
+
+</style>
+</head>
+<body>
+
+<div class="auth-screen" id="authScreen">
+ <div class="auth-card">
+  <div class="auth-brand">Brain<span>Boost</span> ✦</div>
+  <p class="auth-sub">Your personal space to learn, practise and grow.</p>
+  <div class="auth-tabs">
+   <button type="button" id="loginTab" class="active" onclick="setAuthMode('login')">Sign in</button>
+   <button type="button" id="signupTab" onclick="setAuthMode('signup')">Create account</button>
+  </div>
+  <form id="authForm">
+   <label for="authName" id="nameLabel" hidden>Your name</label>
+   <input id="authName" autocomplete="name" placeholder="Your name" hidden>
+   <label for="authEmail">Email address</label>
+   <input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+   <label for="authPassword">Password</label>
+   <input id="authPassword" type="password" autocomplete="current-password" placeholder="At least 6 characters" minlength="6" required>
+   <button class="btn" id="authSubmit" type="submit">Sign in to BrainBoost</button>
+   <div class="auth-message" id="authMessage" role="status"></div>
+  </form>
+  <div class="creator">Created with care by <strong>Jacob Justice</strong> · © 2026</div>
+ </div>
+</div>
+<div id="appContent" hidden>
+<header><div class="logo">Brain<span>Boost</span> ✦</div><div class="account-bar"><span id="welcomeUser">Welcome!</span><button onclick="signOut()">Sign out</button></div><nav><a href="#subjects">Subjects</a><a href="#quiz">Quick quiz</a><a href="#about">About</a></nav></header>
+<main class="wrap">
+<section class="hero">
+ <div class="hero-main"><div class="eyebrow">Your personal learning space</div><h1>Learn smarter.<br>Go further.</h1><p>Build your knowledge one small win at a time. Explore subjects, revise key ideas and test what you've learned.</p><button class="btn light" onclick="document.querySelector('#subjects').scrollIntoView({behavior:'smooth'})">Start learning ↓</button></div>
+ <aside class="daily"><div><div class="emoji">💡</div><h3>Today's reminder</h3><p>You don't have to understand everything at once. Learn one idea, practise it, then move to the next.</p></div><div><span class="tag">Small steps = big progress</span></div></aside>
+</section>
+<section id="subjects"><div class="section-head"><div><h2>Choose a subject</h2><p>Tap a card to open a quick revision note.</p></div></div>
+<div class="grid">
+ <article class="subject" onclick="showTopic('math')"><div class="icon">➗</div><h3>Mathematics</h3><p>Numbers, algebra, geometry and problem-solving.</p><span class="tag">Open revision</span></article>
+ <article class="subject" onclick="showTopic('science')"><div class="icon">🧪</div><h3>Science</h3><p>Explore physics, chemistry and biology basics.</p><span class="tag">Open revision</span></article>
+ <article class="subject" onclick="showTopic('english')"><div class="icon">📚</div><h3>English</h3><p>Build vocabulary, grammar and writing skills.</p><span class="tag">Open revision</span></article>
+</div>
+<div class="content" id="topic"></div>
+</section>
+<section id="quiz"><div class="section-head"><div><h2>Quick knowledge check</h2><p>Try a question and see how you do.</p></div></div>
+<div class="content show"><div class="quizbox"><strong id="question">What is the chemical symbol for water?</strong><div class="answers" id="answers"><button class="answer" onclick="check(this,false)">CO₂</button><button class="answer" onclick="check(this,true)">H₂O</button><button class="answer" onclick="check(this,false)">O₂</button><button class="answer" onclick="check(this,false)">NaCl</button></div><div class="feedback" id="feedback"></div><button class="btn" onclick="nextQuestion()">Next question →</button></div></div>
+</section>
+<section id="about"><div class="section-head"><div><h2>Keep your curiosity alive</h2><p>BrainBoost is a simple starter learning hub. You can customise the lessons and questions as you grow.</p></div></div></section>
+</main>
+<footer>Made for curious minds · BrainBoost</footer>
+<script>
+
+const AUTH_KEY='brainboost_demo_users_v1';
+let authMode='login';
+function setAuthMode(mode){
+ authMode=mode;
+ document.getElementById('loginTab').classList.toggle('active',mode==='login');
+ document.getElementById('signupTab').classList.toggle('active',mode==='signup');
+ const name=document.getElementById('authName'), label=document.getElementById('nameLabel');
+ name.hidden=label.hidden=mode!=='signup';
+ name.required=mode==='signup';
+ document.getElementById('authSubmit').textContent=mode==='signup'?'Create my account':'Sign in to BrainBoost';
+ document.getElementById('authPassword').autocomplete=mode==='signup'?'new-password':'current-password';
+ document.getElementById('authMessage').textContent='';
+}
+function getUsers(){try{return JSON.parse(localStorage.getItem(AUTH_KEY)||'{}')}catch(e){return {}}}
+async function hashPassword(password){
+ if(!window.crypto || !crypto.subtle) throw new Error('For this demo, open the website using HTTPS (for example, GitHub Pages) so secure sign-in can work.');
+ const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(password));
+ return Array.from(new Uint8Array(bytes)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function enterApp(name,email){
+ sessionStorage.setItem('brainboost_session',JSON.stringify({name,email}));
+ document.getElementById('welcomeUser').textContent='Hi, '+name+'!';
+ document.getElementById('authScreen').style.display='none';
+ document.getElementById('appContent').hidden=false;
+}
+document.getElementById('authForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const msg=document.getElementById('authMessage'), email=document.getElementById('authEmail').value.trim().toLowerCase(), password=document.getElementById('authPassword').value, name=document.getElementById('authName').value.trim();
+ msg.textContent='Please wait…';
+ try{
+  const users=getUsers(), hash=await hashPassword(password);
+  if(authMode==='signup'){
+   if(!name){msg.textContent='Please enter your name.';return}
+   if(users[email]){msg.textContent='An account with this email already exists. Sign in instead.';return}
+   users[email]={name,passwordHash:hash};localStorage.setItem(AUTH_KEY,JSON.stringify(users));
+   enterApp(name,email);
+  }else{
+   if(!users[email] || users[email].passwordHash!==hash){msg.textContent='Email or password is incorrect. If this is your first time, create an account.';return}
+   enterApp(users[email].name,email);
+  }
+ }catch(err){msg.textContent=err.message||'Something went wrong. Please try again.'}
+});
+function signOut(){sessionStorage.removeItem('brainboost_session');document.getElementById('appContent').hidden=true;document.getElementById('authScreen').style.display='grid';document.getElementById('authForm').reset();setAuthMode('login')}
+(function restoreSession(){try{const s=JSON.parse(sessionStorage.getItem('brainboost_session')||'null');if(s&&s.name)enterApp(s.name,s.email)}catch(e){sessionStorage.removeItem('brainboost_session')}})();
+
+const topics={
+ math:{title:'Mathematics: Order of operations',body:'When a calculation has several operations, use this order: brackets first, then powers, then multiplication and division from left to right, then addition and subtraction from left to right.',points:['Work inside brackets first.','Calculate powers and roots next.','Multiply or divide from left to right.','Add or subtract from left to right.']},
+ science:{title:'Science: The three states of matter',body:'Matter commonly exists as solids, liquids and gases. The state depends partly on how much energy its particles have and how they move.',points:['Solids keep their shape and volume.','Liquids flow and take the shape of their container.','Gases spread out to fill their container.']},
+ english:{title:'English: Parts of speech',body:'Parts of speech describe the jobs words do in a sentence. Learning them helps you build clear sentences.',points:['Nouns name people, places, things or ideas.','Verbs show actions or states.','Adjectives describe nouns.','Adverbs often describe verbs, adjectives or other adverbs.']}
+};
+function showTopic(key){const t=topics[key],box=document.getElementById('topic');box.innerHTML='<h3>'+t.title+'</h3><p>'+t.body+'</p><ul>'+t.points.map(x=>'<li>'+x+'</li>').join('')+'</ul>';box.classList.add('show');box.scrollIntoView({behavior:'smooth',block:'nearest'});}
+const questions=[
+ {q:'What is the chemical symbol for water?',a:['CO₂','H₂O','O₂','NaCl'],correct:1,why:'Water is made from hydrogen and oxygen, so its formula is H₂O.'},
+ {q:'What is 9 × 7?',a:['56','63','72','79'],correct:1,why:'9 multiplied by 7 equals 63.'},
+ {q:'Which word is a verb?',a:['Quickly','Beautiful','Jump','Blue'],correct:2,why:'“Jump” names an action, so it is a verb.'}
+];let qi=0,answered=false;
+function renderQuestion(){answered=false;let q=questions[qi];document.getElementById('question').textContent=q.q;document.getElementById('answers').innerHTML=q.a.map((x,i)=>'<button class="answer" onclick="check(this,'+ (i===q.correct) +')">'+x+'</button>').join('');document.getElementById('feedback').textContent='';}
+function check(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.answer').forEach(b=>b.disabled=true);document.getElementById('feedback').textContent=correct?'Correct! 🎉 '+questions[qi].why:'Not quite. '+questions[qi].why;}
+function nextQuestion(){qi=(qi+1)%questions.length;renderQuestion();}
+</script>
+</body></html>
